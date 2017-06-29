@@ -17,6 +17,7 @@ resource "aws_autoscaling_group" "ecs" {
     max_size = "${var.asg_max_size}"
     min_size = "${var.asg_min_size}"
     vpc_zone_identifier = ["${var.asg_subnets}"]
+    launch_configuration = "${aws_launch_configuration.ecs.name}"
     enabled_metrics = [
         "GroupTotalInstances",
         "GroupDesiredCapacity",
