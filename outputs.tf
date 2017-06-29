@@ -7,7 +7,7 @@ output "server_role_arn" {
 }
 
 output "server_instance_profile_id" {
-    value = "${aws_instance_profile.server.id}"
+    value = "${aws_iam_instance_profile.server.id}"
 }
 
 output "ecs_role_name" {
@@ -23,7 +23,7 @@ output "server_security_group_id" {
 }
 
 output "ecs_cluster_name" {
-    value = "${aws_ecs_cluster.name.name}"
+    value = "${aws_ecs_cluster.main.name}"
 }
 
 output "launch_configuration_name" {
