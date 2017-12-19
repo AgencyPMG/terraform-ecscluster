@@ -33,6 +33,7 @@ module "ecscluster" {
     env = "prod" // staging, etc
     cluster_name = "someecscluster"
 
+    vpc_id = "${module.app.vpc_id}" // or whatever your vpc id is
     instance_ami = "..." // may hard code this or use `data "aws_ami"` to provide it
     instance_type = "t2.name"
     instance_keypair = "some_keypair"
