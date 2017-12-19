@@ -27,17 +27,17 @@ output "ecs_cluster_name" {
 }
 
 output "launch_configuration_name" {
-    value = "${aws_launch_configuration.ecs.name}"
+    value = "${length(aws_launch_configuration.ecs.*.name) > 0 ? element(aws_launch_configuration.ecs.*.name, 0) : ""}"
 }
 
 output "asg_id" {
-    value = "${aws_autoscaling_group.ecs.id}"
+    value = "${length(aws_autoscaling_group.ecs.*.id) > 0 ? element(aws_autoscaling_group.ecs.*.id, 0) : ""}"
 }
 
 output "asg_arn" {
-    value = "${aws_autoscaling_group.ecs.arn}"
+    value = "${length(aws_autoscaling_group.ecs.*.id) > 0 ? element(aws_autoscaling_group.ecs.*.arn, 0) : ""}"
 }
 
 output "asg_name" {
-    value = "${aws_autoscaling_group.ecs.name}"
+    value = "${length(aws_autoscaling_group.ecs.*.id) > 0 ? element(aws_autoscaling_group.ecs.*.name, 0) : ""}"
 }

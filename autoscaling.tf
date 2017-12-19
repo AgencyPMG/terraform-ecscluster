@@ -1,4 +1,5 @@
 resource "aws_launch_configuration" "ecs" {
+    count = "${var.asg_enabled ? 1 : 0}"
     name_prefix = "${var.cluster_name}"
     image_id = "${var.instance_ami}"
     instance_type = "${var.instance_type}"
@@ -13,7 +14,7 @@ EOF
 
 resource "aws_autoscaling_group" "ecs" {
     count = "${var.asg_enabled ? 1 : 0}"
-    name_prefix = "${var.cluster_name}"
+    name = "${element(aws_launch_configuration.ecs.*.name, 0)}"
     max_size = "${var.asg_max_size}"
     min_size = "${var.asg_min_size}"
     vpc_zone_identifier = ["${var.asg_subnets}"]
