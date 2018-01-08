@@ -6,6 +6,9 @@ resource "aws_launch_configuration" "ecs" {
     key_name = "${var.instance_keypair}"
     security_groups = ["${aws_security_group.server.id}"]
     iam_instance_profile = "${aws_iam_instance_profile.server.id}"
+    lifecycle {
+        create_before_destroy = true
+    }
     user_data = <<EOF
 #!/bin/bash
 echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config
@@ -26,6 +29,9 @@ resource "aws_autoscaling_group" "ecs" {
         "GroupPendingInstances",
         "GroupInServiceInstances",
     ]
+    lifecycle {
+        create_before_destroy = true
+    }
     tag {
         key = "Name"
         value = "${var.cluster_name} ecs server"
