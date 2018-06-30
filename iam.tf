@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "server" {
 }
 
 resource "aws_iam_role" "server" {
-    name = "ecs-server@${var.app}${var.env}"
+    name = "ecs-server@${var.cluster_name}"
     assume_role_policy = "${data.aws_iam_policy_document.server.json}"
 }
 
@@ -21,7 +21,7 @@ resource "aws_iam_role_policy_attachment" "server_default" {
 }
 
 resource "aws_iam_instance_profile" "server" {
-    name = "ecs-server@${var.app}${var.env}"
+    name = "ecs-server@${var.cluster_name}"
     role = "${aws_iam_role.server.id}"
 }
 
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "ecs" {
 }
 
 resource "aws_iam_role" "ecs" {
-    name = "ecs@${var.app}${var.env}"
+    name = "ecs@${var.cluster_name}"
     assume_role_policy = "${data.aws_iam_policy_document.ecs.json}"
 }
 
