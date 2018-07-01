@@ -26,6 +26,10 @@ output "ecs_cluster_name" {
     value = "${aws_ecs_cluster.main.name}"
 }
 
+output "ecs_cluster_arn" {
+    value = "${aws_ecs_cluster.main.arn}"
+}
+
 output "launch_configuration_name" {
     value = "${length(aws_launch_configuration.ecs.*.name) > 0 ? element(aws_launch_configuration.ecs.*.name, 0) : ""}"
 }
