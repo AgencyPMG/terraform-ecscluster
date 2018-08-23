@@ -14,7 +14,10 @@ resource "aws_launch_configuration" "ecs" {
 
   user_data = <<EOF
 #!/bin/bash
+
 echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config
+${var.ecs_agent_container_stop_timeout != "" ? "echo ECS_CONTAINER_STOP_TIMEOUT=${var.ecs_agent_container_stop_timeout} >> /etc/ecs/ecs.config" : ""}
+
 EOF
 }
 

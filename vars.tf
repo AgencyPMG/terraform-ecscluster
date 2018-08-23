@@ -57,3 +57,8 @@ variable "ebs_optimized" {
   default     = true
   description = "Whether or not to create instance that are EBS optimized."
 }
+
+variable "ecs_agent_container_stop_timeout" {
+  default     = ""
+  description = "Duration value for ECS_CONTAINER_STOP_TIMEOUT agent configuration."
+}
