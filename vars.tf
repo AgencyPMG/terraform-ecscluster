@@ -58,7 +58,7 @@ variable "ebs_optimized" {
   description = "Whether or not to create instance that are EBS optimized."
 }
 
-variable "ecs_agent_container_stop_timeout" {
+variable "additional_bash_user_data" {
   default     = ""
-  description = "Duration value for ECS_CONTAINER_STOP_TIMEOUT agent configuration."
+  description = "Addition bash code to put in user_data for the launch configuration."
 }
