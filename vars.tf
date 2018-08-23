@@ -57,3 +57,8 @@ variable "ebs_optimized" {
   default     = true
   description = "Whether or not to create instance that are EBS optimized."
 }
+
+variable "additional_bash_user_data" {
+  default     = ""
+  description = "Addition bash code to put in user_data for the launch configuration."
+}

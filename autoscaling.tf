@@ -14,7 +14,10 @@ resource "aws_launch_configuration" "ecs" {
 
   user_data = <<EOF
 #!/bin/bash
+
 echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config
+${var.additional_bash_user_data}
+
 EOF
 }
 
