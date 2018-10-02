@@ -1,6 +1,6 @@
 resource "aws_security_group" "server" {
   name        = "ecs-server@${var.cluster_name}"
-  description = "Default security group for the ${var.cluster_name} ECS servers"
+  description = "${var.sg_description == "" ? local.default_sg_description : var.sg_description}"
   vpc_id      = "${var.vpc_id}"
 
   tags {

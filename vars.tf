@@ -33,6 +33,12 @@ variable "instance_keypair" {
   description = "The keypair with which the instances will be created."
 }
 
+variable "sg_description" {
+    type = "string"
+    description = "The description for the security group"
+    default = ""
+}
+
 variable "asg_subnets" {
   type        = "list"
   description = "The subnets into which the ECS servers should be placed."
@@ -61,4 +67,8 @@ variable "ebs_optimized" {
 variable "additional_bash_user_data" {
   default     = ""
   description = "Addition bash code to put in user_data for the launch configuration."
+}
+
+locals {
+    default_sg_description = "Default security group for the ${var.cluster_name} ECS servers"
 }
