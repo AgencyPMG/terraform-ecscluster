@@ -48,3 +48,26 @@ resource "aws_iam_role_policy_attachment" "ecs_default" {
   role       = "${aws_iam_role.ecs.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
+
+data "aws_iam_policy_document" "task-exec" {
+  statement {
+    sid     = "AllowAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "task-exec" {
+  name               = "ecs-task-exec@${var.cluster_name}"
+  assume_role_policy = "${data.aws_iam_policy_document.task-exec.json}"
+}
+
+resource "aws_iam_role_policy_attachment" "task-exec" {
+  role       = "${aws_iam_role.task-exec.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
