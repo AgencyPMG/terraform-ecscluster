@@ -6,6 +6,14 @@ output "server_role_arn" {
   value = "${aws_iam_role.server.arn}"
 }
 
+output "task_exec_role_name" {
+  value = "${aws_iam_role.task-exec.name}"
+}
+
+output "task_exec_role_arn" {
+  value = "${aws_iam_role.task-exec.arn}"
+}
+
 output "server_instance_profile_id" {
   value = "${aws_iam_instance_profile.server.id}"
 }
