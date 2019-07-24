@@ -3,7 +3,7 @@ output "server_role_name" {
 }
 
 output "server_role_arn" {
-  value = "${aws_iam_role.server.name}"
+  value = "${aws_iam_role.server.arn}"
 }
 
 output "server_instance_profile_id" {
@@ -15,7 +15,7 @@ output "ecs_role_name" {
 }
 
 output "ecs_role_arn" {
-  value = "${aws_iam_role.ecs.name}"
+  value = "${aws_iam_role.ecs.arn}"
 }
 
 output "server_security_group_id" {
