@@ -46,7 +46,7 @@ resource "aws_iam_role" "ecs" {
 
 resource "aws_iam_role_policy_attachment" "ecs_default" {
   role       = "${aws_iam_role.ecs.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+  policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonECSServiceRolePolicy"
 }
 
 data "aws_iam_policy_document" "task-exec" {
