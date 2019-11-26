@@ -1,46 +1,46 @@
 variable "app" {
-  type        = "string"
+  type        = string
   description = "The application name, used in the `Application` tags."
 }
 
 variable "env" {
-  type        = "string"
+  type        = string
   description = "The application environment (prod, staging, etc). Pass in terraform.env here if you like. Used in the `Environment` tags."
 }
 
 variable "vpc_id" {
-  type        = "string"
+  type        = string
   description = "The VPC in which the ECS cluster will be placed."
 }
 
 variable "cluster_name" {
-  type        = "string"
+  type        = string
   description = "The name with which the ECS cluster will be created."
 }
 
 variable "instance_ami" {
-  type        = "string"
+  type        = string
   description = "The AMI for the container servers. Espects one of the ECS optimizes AMIs."
 }
 
 variable "instance_type" {
-  type        = "string"
+  type        = string
   description = "The instance type of the container servers."
 }
 
 variable "instance_keypair" {
-  type        = "string"
+  type        = string
   description = "The keypair with which the instances will be created."
 }
 
 variable "sg_description" {
-    type = "string"
-    description = "The description for the security group"
-    default = ""
+  type        = string
+  description = "The description for the security group"
+  default     = ""
 }
 
 variable "asg_subnets" {
-  type        = "list"
+  type        = list(string)
   description = "The subnets into which the ECS servers should be placed."
 }
 
@@ -70,5 +70,6 @@ variable "additional_bash_user_data" {
 }
 
 locals {
-    default_sg_description = "Default security group for the ${var.cluster_name} ECS servers"
+  default_sg_description = "Default security group for the ${var.cluster_name} ECS servers"
 }
+

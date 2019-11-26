@@ -13,17 +13,17 @@ data "aws_iam_policy_document" "server" {
 
 resource "aws_iam_role" "server" {
   name               = "ecs-server@${var.cluster_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.server.json}"
+  assume_role_policy = data.aws_iam_policy_document.server.json
 }
 
 resource "aws_iam_role_policy_attachment" "server_default" {
-  role       = "${aws_iam_role.server.name}"
+  role       = aws_iam_role.server.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_instance_profile" "server" {
   name = "ecs-server@${var.cluster_name}"
-  role = "${aws_iam_role.server.id}"
+  role = aws_iam_role.server.id
 }
 
 data "aws_iam_policy_document" "ecs" {
@@ -41,11 +41,11 @@ data "aws_iam_policy_document" "ecs" {
 
 resource "aws_iam_role" "ecs" {
   name               = "ecs@${var.cluster_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.ecs.json}"
+  assume_role_policy = data.aws_iam_policy_document.ecs.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_default" {
-  role       = "${aws_iam_role.ecs.name}"
+  role       = aws_iam_role.ecs.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
 
@@ -64,10 +64,11 @@ data "aws_iam_policy_document" "task-exec" {
 
 resource "aws_iam_role" "task-exec" {
   name               = "ecs-task-exec@${var.cluster_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.task-exec.json}"
+  assume_role_policy = data.aws_iam_policy_document.task-exec.json
 }
 
 resource "aws_iam_role_policy_attachment" "task-exec" {
-  role       = "${aws_iam_role.task-exec.name}"
+  role       = aws_iam_role.task-exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
