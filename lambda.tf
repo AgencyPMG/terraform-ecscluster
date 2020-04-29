@@ -1,6 +1,11 @@
+resource "random_string" "task-rando" {
+  length  = 4
+  special = false
+}
+
 module "check-ecs-tasks" {
   source             = "git@github.com:AgencyPMG/terraform-lambda-function.git?ref=tf_0.12"
-  app                = var.app
+  app                = "${var.app}-${random_string.task-rando.result}"
   env                = var.env
   name               = "check-ecs-tasks-${var.app}-${var.env}"
   runtime            = "python3.7"
@@ -85,8 +90,13 @@ resource "aws_sns_topic_subscription" "ecs-task-alerts" {
   endpoint_auto_confirms = true
 }
 
+resource "random_string" "dynamo-table" {
+  length  = 4
+  special = false
+}
+
 resource "aws_dynamodb_table" "ecs-task-alerts" {
-  name           = "ecs-task-alerts-${var.app}${var.env}"
+  name           = "ecs-task-alerts-${var.app}${var.env}-${random_string.dynamo-table.result}"
   write_capacity = 1
   read_capacity  = 1
 
