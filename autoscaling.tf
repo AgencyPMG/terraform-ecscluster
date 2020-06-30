@@ -27,7 +27,7 @@ resource "aws_autoscaling_group" "ecs" {
   name                 = element(aws_launch_configuration.ecs.*.name, 0)
   max_size             = var.asg_max_size
   min_size             = var.asg_min_size
-  vpc_zone_identifier  = var.asg_subnets
+  vpc_zone_identifier  = local.subnet_ids
   launch_configuration = aws_launch_configuration.ecs[0].name
 
   enabled_metrics = [

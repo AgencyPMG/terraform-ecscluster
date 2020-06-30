@@ -21,16 +21,19 @@ variable "cluster_name" {
 variable "instance_ami" {
   type        = string
   description = "The AMI for the container servers. Espects one of the ECS optimizes AMIs."
+  default     = ""
 }
 
 variable "instance_type" {
   type        = string
   description = "The instance type of the container servers."
+  default     = ""
 }
 
 variable "instance_keypair" {
   type        = string
   description = "The keypair with which the instances will be created."
+  default     = ""
 }
 
 variable "sg_description" {
@@ -41,7 +44,14 @@ variable "sg_description" {
 
 variable "asg_subnets" {
   type        = list(string)
-  description = "The subnets into which the ECS servers should be placed."
+  description = "The subnets into which the ECS servers should be placed. (Deprecated.  Use subnet_ids instead)"
+  default     = []
+}
+
+variable "subnet_ids" {
+  type        = list(string)
+  description = "The subnets into which the ECS servers, lambdas and/or Fargate tasks should be placed."
+  default     = []
 }
 
 variable "asg_max_size" {

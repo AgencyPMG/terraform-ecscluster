@@ -11,7 +11,7 @@ module "check-ecs-tasks" {
   runtime            = "python3.7"
   handler            = "main.handle"
   path               = "${path.module}/check_tasks"
-  subnet_ids         = var.asg_subnets
+  subnet_ids         = local.subnet_ids
   security_group_ids = [aws_security_group.server.id]
   function_version   = filemd5("${path.module}/check_tasks/main.py")
   environment = {
