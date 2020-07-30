@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import json
 import socket
 import boto3 as aws
@@ -88,11 +89,25 @@ def message_was_sent(detail):
 
     return True
 
+def record_task_counts(clustername):
+    families = {}
+    for task in get_running_tasks(clustername):
+
+        family = re.search('/([^:]+):[0-9]+$', task)[1]
+        if family in families:
+            families[family] += 1
+        else:
+            families[family] = 1
+
+    print(families)
+
 def handle(event, context=None):
     appname = os.environ['APP_NAME']
     appenv = os.environ['APP_ENVIRONMENT']
 
-    check_running_tasks("%s%s" % (appname, appenv))
+    clustername = "%s%s" % (appname, appenv)
+    check_running_tasks(clustername)
+    record_task_counts(clustername)
 
 if __name__ == '__main__':
     handle({})

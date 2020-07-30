@@ -42,6 +42,16 @@ resource "aws_autoscaling_group" "ecs" {
     create_before_destroy = true
   }
 
+  initial_lifecycle_hook {
+    name                 = "drain-tasks"
+    default_result       = "ABANDON"
+    heartbeat_timeout    = "900"
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
+
+    notification_target_arn = aws_sns_topic.ecs-drain.arn
+    role_arn                = aws_iam_role.ecs-drain.arn
+  }
+
   tag {
     key                 = "Name"
     value               = "${var.cluster_name} ecs server"
@@ -61,3 +71,28 @@ resource "aws_autoscaling_group" "ecs" {
   }
 }
 
+resource "aws_iam_role" "ecs-drain" {
+  name               = "ECSDrain@${var.app}-${var.env}"
+  assume_role_policy = data.aws_iam_policy_document.ecs-drain.json
+}
+
+data "aws_iam_policy_document" "ecs-drain" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["autoscaling.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecs-drain" {
+  role       = aws_iam_role.ecs-drain.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AutoScalingNotificationAccessRole"
+}
+
+resource "aws_sns_topic" "ecs-drain" {
+  name = "${var.app}-${var.env}-ecs-drain"
+}
