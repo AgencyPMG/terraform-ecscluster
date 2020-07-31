@@ -72,7 +72,7 @@ resource "aws_autoscaling_group" "ecs" {
 }
 
 resource "aws_iam_role" "ecs-drain" {
-  name               = "ECSDrain@${var.app}-${var.env}"
+  name               = "ECSDrain@${var.app}-${var.env}-${random_string.drain-task-rando.result}"
   assume_role_policy = data.aws_iam_policy_document.ecs-drain.json
 }
 

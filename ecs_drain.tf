@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "ecs-drain-lambda" {
 }
 
 resource "aws_iam_policy" "ecs-drain-lambda" {
-  name        = "ECSDrainLambda@${var.app}-${var.env}"
+  name        = "ECSDrainLambda@${var.app}-${var.env}-${random_string.drain-task-rando.result}"
   policy      = data.aws_iam_policy_document.ecs-drain-lambda.json
   description = "Allows Lambda to recieve notifications for ECS Draining"
 }
