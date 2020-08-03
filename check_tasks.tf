@@ -1,3 +1,7 @@
+locals {
+  check_tasks_name = "check-ecs-tasks-${var.app}-${var.env}-${random_string.task-rando.result}"
+}
+
 resource "random_string" "task-rando" {
   length  = 4
   special = false
@@ -7,7 +11,7 @@ module "check-ecs-tasks" {
   source             = "git@github.com:AgencyPMG/terraform-lambda-function.git?ref=tf_0.12"
   app                = "${var.app}-${random_string.task-rando.result}"
   env                = var.env
-  name               = "check-ecs-tasks-${var.app}-${var.env}"
+  name               = local.check_tasks_name
   runtime            = "python3.7"
   handler            = "main.handle"
   path               = "${path.module}/check_tasks"
@@ -22,13 +26,13 @@ module "check-ecs-tasks" {
 }
 
 resource "aws_cloudwatch_event_rule" "check-ecs-tasks" {
-  name                = "check-ecs-tasks-${var.app}${var.env}"
+  name                = local.check_tasks_name
   schedule_expression = "rate(5 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "check-ecs-tasks" {
   rule      = aws_cloudwatch_event_rule.check-ecs-tasks.name
-  target_id = "check-ecs-tasks-${var.app}-${var.env}"
+  target_id = local.check_tasks_name
   arn       = module.check-ecs-tasks.function_arn
 }
 
@@ -41,7 +45,7 @@ resource "aws_lambda_permission" "check-ecs-tasks" {
 }
 
 resource "aws_iam_role_policy" "check-ecs-tasks-perms" {
-  name   = "check-ecs-tasks@${var.app}${var.env}"
+  name   = local.check_tasks_name
   role   = module.check-ecs-tasks.role_name
   policy = data.aws_iam_policy_document.check-ecs-tasks-perms.json
 }
@@ -80,7 +84,7 @@ data "aws_iam_policy_document" "check-ecs-tasks-perms" {
 }
 
 resource "aws_sns_topic" "ecs-task-alerts" {
-  name = "ecs-task-alerts-${var.app}${var.env}"
+  name = local.check_tasks_name
 }
 
 resource "aws_sns_topic_subscription" "ecs-task-alerts" {
@@ -96,7 +100,7 @@ resource "random_string" "dynamo-table" {
 }
 
 resource "aws_dynamodb_table" "ecs-task-alerts" {
-  name           = "ecs-task-alerts-${var.app}${var.env}-${random_string.dynamo-table.result}"
+  name           = local.check_tasks_name
   write_capacity = 1
   read_capacity  = 1
 

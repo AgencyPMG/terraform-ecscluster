@@ -1,3 +1,7 @@
+locals {
+  ecs_drain_name = "ecs-drain-${var.app}-${var.env}-${random_string.drain-task-rando.result}"
+}
+
 resource "random_string" "drain-task-rando" {
   length  = 4
   special = false
@@ -5,9 +9,9 @@ resource "random_string" "drain-task-rando" {
 
 module "ecs-drain" {
   source             = "git@github.com:AgencyPMG/terraform-lambda-function.git?ref=tf_0.12"
-  app                = "${var.app}-${random_string.drain-task-rando.result}"
+  app                = local.ecs_drain_name
   env                = var.env
-  name               = "ecs-drain-${var.app}-${var.env}"
+  name               = local.ecs_drain_name
   runtime            = "python3.7"
   handler            = "main.handle"
   path               = "${path.module}/ecs_drain"
@@ -68,7 +72,7 @@ data "aws_iam_policy_document" "ecs-drain-lambda" {
 }
 
 resource "aws_iam_policy" "ecs-drain-lambda" {
-  name        = "ECSDrainLambda@${var.app}-${var.env}-${random_string.drain-task-rando.result}"
+  name        = local.ecs_drain_name
   policy      = data.aws_iam_policy_document.ecs-drain-lambda.json
   description = "Allows Lambda to recieve notifications for ECS Draining"
 }
