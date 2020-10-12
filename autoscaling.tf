@@ -16,6 +16,7 @@ resource "aws_launch_configuration" "ecs" {
 #!/bin/bash
 
 echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config
+echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
 ${var.additional_bash_user_data}
 
 EOF
