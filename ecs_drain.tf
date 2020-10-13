@@ -8,7 +8,7 @@ resource "random_string" "drain-task-rando" {
 }
 
 module "ecs-drain" {
-  source             = "git@github.com:AgencyPMG/terraform-lambda-function.git?ref=tf_0.12"
+  source             = "git@github.com:AgencyPMG/terraform-lambda-function.git"
   app                = local.ecs_drain_name
   env                = var.env
   name               = local.ecs_drain_name
