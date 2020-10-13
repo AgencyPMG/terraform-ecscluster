@@ -8,7 +8,7 @@ resource "random_string" "task-rando" {
 }
 
 module "check-ecs-tasks" {
-  source             = "git@github.com:AgencyPMG/terraform-lambda-function.git?ref=tf_0.12"
+  source             = "git@github.com:AgencyPMG/terraform-lambda-function.git"
   app                = "${var.app}-${random_string.task-rando.result}"
   env                = var.env
   name               = local.check_tasks_name
