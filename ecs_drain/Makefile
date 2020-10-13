@@ -1,0 +1,2 @@
+deps:
+	@echo No dependencies
