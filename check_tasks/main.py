@@ -42,6 +42,9 @@ def get_running_tasks(clustername):
     running_tasks = paginator.paginate(cluster=clustername, PaginationConfig={'MaxItems':100})
 
     for task_arns in running_tasks:
+        if len(task_arns['taskArns']) == 0:
+            continue
+
         for task in ecs.describe_tasks(cluster=clustername, tasks=task_arns['taskArns'])['tasks']:
             yield task['taskDefinitionArn']
 
