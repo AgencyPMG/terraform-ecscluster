@@ -102,10 +102,8 @@ def record_task_counts(clustername):
     print(families)
 
 def handle(event, context=None):
-    appname = os.environ['APP_NAME']
-    appenv = os.environ['APP_ENVIRONMENT']
+    clustername = os.environ['CLUSTER_NAME']
 
-    clustername = "%s%s" % (appname, appenv)
     check_running_tasks(clustername)
     record_task_counts(clustername)
 

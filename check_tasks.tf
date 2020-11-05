@@ -19,9 +19,8 @@ module "check-ecs-tasks" {
   security_group_ids = [aws_security_group.server.id]
   function_version   = filemd5("${path.module}/check_tasks/main.py")
   environment = {
-    APP_NAME        = var.app
-    APP_ENVIRONMENT = var.env
-    SNS_TOPIC_ARN   = aws_sns_topic.ecs-task-alerts.arn
+    CLUSTER_NAME  = aws_ecs_cluster.main.name
+    SNS_TOPIC_ARN = aws_sns_topic.ecs-task-alerts.arn
   }
 }
 
